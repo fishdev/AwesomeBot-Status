@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Version 3 is broken",
+        "type": "outage",
+        "updates": [
+            {
+                "type": "identified",
+                "timestamp": 1478619952269,
+                "message": "**AwesomeBot version 3 is officially dead.** Discord has mandated [gateway sharding](https://github.com/hammerandchisel/discord-api-docs/issues/17) for all bots with more than 2500 guilds, which includes AwesomeBot. Version 3 does not support sharding and is not of a stateless design, so it currently can't connect to Discord. This means the bot won't respond to any public or PM command, and the website is also largely down. For practical purposes, __the bot is dead until further notice__.\r\n\r\nWe're working as quickly as possible on version 4 which has been completely rewritten with support for gateway sharding as well as a host of other improvements. AwesomeBot Neo brings a redesigned website, faster performance, and a more consistent brand for the best Discord bot! While we can't provide an ETA yet, it shouldn't be too long before you can enjoy the new features of the Delighted Dolphin™.\r\n\r\nThank you all for your patience and understanding.",
+                "author": "BitQuote"
+            }
+        ]
+    }
+]

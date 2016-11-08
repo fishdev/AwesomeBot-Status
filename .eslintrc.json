@@ -1,0 +1,85 @@
+{
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "arrow-parens": [
+            "error",
+            "as-needed"
+        ],
+        "dot-notation": [
+            "error", {
+                "allowKeywords": false
+            }
+        ],
+        "indent": [
+            "error",
+            "tab", {
+                "SwitchCase": 1
+            }
+        ],
+        "keyword-spacing": [
+            "error", {
+                "before": true,
+                "after": false,
+                "overrides": {
+                    "else": {
+                        "after": true
+                    },
+                    "case": {
+                        "after": true
+                    },
+                    "return": {
+                        "after": true
+                    },
+                    "try": {
+                        "after": true
+                    }
+                }
+            }
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "object-shorthand": "error",
+        "no-const-assign": "error",
+        "no-fallthrough": "off",
+        "no-mixed-spaces-and-tabs": "warn",
+        "no-multiple-empty-lines": [
+            "error", {
+                "max": 1,
+                "maxEOF": 1
+            }
+        ],
+        "no-redeclare": "error",
+        "no-restricted-syntax": [
+            "error",
+            "FunctionDeclaration"
+        ],
+        "no-unused-vars": "error",
+        "no-use-before-define": [
+            "error", {
+                "functions": true,
+                "classes": true
+            }
+        ],
+        "no-var": "error",
+        "prefer-const": "error",
+        "prefer-template": "error",
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "template-curly-spacing": [
+            "error",
+            "never"
+        ]
+    }
+}

@@ -1,0 +1,75 @@
+<div class="message <%= incident.type.color_class %>">
+    <div class="message-body">
+        <p class="title">
+            <a class="subtitle" href="/<%= incident.index+1 %>">#<%= incident.index+1 %></a>
+            <%= incident.name %>
+            <span class="tag <%= incident.type.color_class %>">
+                <%= incident.type.name %>
+                <% if(authUser) { %>
+                    <a class="delete is-small" onclick="if(confirm('Are you sure you want to delete this incident?')) {window.location.href = '/delete/incident?id=<%= incident.index %>';}"></a>
+                <% } %>
+            </span>
+        </p>
+
+        <% if(authUser) { %>
+            <a class="button is-fullwidth is-primary is-outlined" onclick="$('#incident-<%= incident.index %>-new-update-box').slideToggle(86);">
+                <span class="icon">
+                    <i class="fa fa-plus"></i>
+                </span>
+                <span>Add update to incident</span>
+            </a>
+            <div id="incident-<%= incident.index %>-new-update-box" class="box" style="display: none;margin-top: 10px;margin-bottom: 0px;">
+                <form action="/new/update" method="post">
+                    <input name="id" type="hidden" value="<%= incident.index %>">
+                    <p class="control">
+                        <textarea name="message" class="textarea" placeholder="Message, in markdown" required></textarea>
+                    </p>
+                    <div class="control is-grouped">
+                        <p class="control">
+                            <span class="select">
+                                <select name="type">
+                                    <option value="investigating">Investigating</option>
+                                    <option value="identified">Identified</option>
+                                    <option value="monitoring">Monitoring</option>
+                                    <option value="resolved">Resolved</option>
+                                </select>
+                            </span>
+                        </p>
+                        <p class="control">
+                            <button class="button is-primary">
+                                <span class="icon">
+                                    <i class="fa fa-plus"></i>
+                                </span>
+                                <span>Add</span>
+                            </button>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            <br>
+        <% } %>
+
+        <% for(var i=incident.updates.length-1; i>=0; i--) { %>
+            <div id="update-<%= incident.index %>-<%= i %>" class="notification">
+                <% if(authUser) { %>
+                    <a class="delete" onclick="if(confirm('Are you sure you want to delete this incident update?')) {window.location.href = '/delete/update?id=<%= incident.index %>&update=<%= i %>';}"></a>
+                <% } %>
+                <p class="title is-4">
+                    <span class="icon">
+                        <i class="fa <%= incident.updates[i].type.icon %>"></i>
+                    </span>
+                    <span><%= incident.updates[i].type.name %></span>
+                    &nbsp;&nbsp;
+                    <span class="subtitle">
+                        <%= incident.updates[i].author %>
+                        &nbsp;&nbsp;&nbsp;
+                        <span title="<%= incident.updates[i].rawTimestamp %>"><%= incident.updates[i].relativeTimestamp %></span>
+                    </span>
+                </p>
+                <div class="content">
+                    <%- incident.updates[i].message %>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>

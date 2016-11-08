@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login - AwesomeBot Status</title>
+	<% include ../partials/head %>
+</head>
+<body>
+    <section class="hero is-light is-fullheight">
+        <div class="hero-head">
+			<a class="nav-item is-brand title is-5 is-active" href="#" style="font-family: Montserrat;">
+                <img src="/img/icon.png" style="border-radius: 100%;">
+                &nbsp;
+                AwesomeBot
+            </a>
+		</div>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="columns">
+                    <div class="column is-6 is-offset-3">
+                        <div class="box">
+                            <p class="title has-text-left">
+                                Login to status page
+                            </p>
+                            <form action="/login" method="post">
+                                <p class="control has-icon has-icon-left">
+                                    <input name="username" class="input" type="text" placeholder="Username">
+                                    <i class="fa fa-user"></i>
+                                </p>
+                                <p class="control has-icon has-icon-left">
+                                    <input name="password" class="input" type="password" placeholder="Password">
+                                    <i class="fa fa-key"></i>
+                                </p>
+                                <p class="control">
+                                    <button class="button is-primary">
+                                        <span class="icon">
+                                            <i class="fa fa-sign-in"></i>
+                                        </span>
+                                        <span>Login</span>
+                                    </button>
+                                    &nbsp;
+                                    <a class="button" href="/">
+                                        <span class="icon is-small">
+                                            <i class="fa fa-times"></i>
+                                        </span>
+                                        <span>Cancel</span>
+                                    </a>
+                                </p>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

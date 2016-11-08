@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= incident ? ("Incident #" + (incident.index+1)) : "Incident Details" %> - AwesomeBot Status</title>
+	<% include ../partials/head %>
+</head>
+<body>
+    <section class="hero is-fullheight">
+		<div class="hero-head">
+			<a class="nav-item is-brand title is-5 is-active" href="#" style="font-family: Montserrat;">
+                <img src="/img/icon.png" style="border-radius: 100%;">
+                &nbsp;
+                AwesomeBot
+            </a>
+		</div>
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns">
+                    <div class="column is-8 is-offset-2">
+                        <% if(incident) { %>
+                            <div class="control is-grouped">
+                                <p class="control">
+                                    <a class="button is-small" href="/">
+                                        <span class="icon is-small">
+                                            <i class="fa fa-chevron-left"></i>
+                                        </span>
+                                        <span>Return home</span>
+                                    </a>
+                                </p>
+                                <p class="control">
+                                    <a class="button is-small" onclick="window.location.reload(true);">
+                                        <span class="icon is-small">
+                                            <i class="fa fa-refresh"></i>
+                                        </span>
+                                        <span>Refresh</span>
+                                    </a>
+                                </p>
+                            </div>
+                            <% include ../partials/incident %>
+                        <% } else { %>
+                            <div class="has-text-centered">
+								Incident not found. <a href="/">Return home</a>
+							</div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

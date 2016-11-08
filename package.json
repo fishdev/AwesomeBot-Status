@@ -1,0 +1,26 @@
+{
+    "name": "AwesomeBot-Status",
+    "description": "Status page for the best Discord bot",
+    "version": "0.1.1",
+    "author": "BitQuote",
+    "license": "GPL v2",
+    "dependencies": {
+        "body-parser": "*",
+        "compression": ">=1.6.0",
+        "cookie-parser": "*",
+        "ejs": ">=1.0.0",
+        "express-session": ">=1.14",
+        "express": ">=4.0.0",
+        "moment": ">=2.0",
+        "passport": ">=0.3.2",
+        "passport-local": "*",
+        "sha256": ">=0.2",
+        "showdown": "*",
+        "unirest": "*",
+        "write-file-atomic": ">=1.2.0"
+    },
+    "scripts": {
+       "start": "node app.js --production"
+    },
+    "main": "app.js"
+}

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= pages.current==1 ? "" : ("Page " + pages.current + " - ") %>AwesomeBot Status</title>
+	<% include ../partials/head %>
+</head>
+<body>
+    <section class="hero <%= status.current.color_class %> is-bold is-small">
+        <div class="hero-head">
+            <% include ../partials/header %>
+        </div>
+
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title is-1">
+                    <span class="icon is-large">
+                        <i class="fa <%= status.current.icon %>"></i>
+                    </span>
+                    <span><%= status.current.name %></span>
+                </h1>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+			<% if(pages.current==1) { %>
+				<div class="box">
+					<progress class="progress is-primary is-medium" value="<%= uptime_percent %>" max="100" title="Uptime in the last day: <%= uptime_percent %>%"><%= uptime_percent %>%</progress>
+
+					<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+					<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+					<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+					<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+					<nav class="level" style="margin-bottom: 5px;">
+						<div class="level-item has-text-centered">
+							<a onclick="$('#servers-chart').slideToggle(86);">
+								<p class="heading">Servers</p>
+								<p class="title"><%= server_count %></p>
+							</a>
+						</div>
+						<div class="level-item has-text-centered">
+							<a onclick="$('#users-chart').slideToggle(86);">
+								<p class="heading">Users</p>
+								<p class="title"><%= user_count %></p>
+							</a>
+						</div>
+						<div class="level-item has-text-centered">
+							<a onclick="$('#poll-response').slideToggle(86);">
+								<p class="heading">Status Code</p>
+								<p class="title"><%= last_response %></p>
+							</a>
+						</div>
+						<div class="level-item has-text-centered">
+							<a onclick="$('#delay-chart').slideToggle(86);">
+								<p class="heading">Response Time</p>
+								<p class="title"><%= last_delay %>ms</p>
+							</a>
+						</div>
+					</nav>
+
+					<div id="servers-chart" style="margin-top: 15px;"></div>
+					<div id="users-chart" style="margin-top: 15px;"></div>
+					<code class="box" id="poll-response" style="margin-top: 20px;display: none;margin-bottom: 5px;box-shadow: none;background-color: whitesmoke;">No response</code>
+					<div id="delay-chart" style="margin-top: 15px;"></div>
+					<script>
+					$.getJSON("/data/servers", function(data, status) {
+						if(status=="success") {
+							$("#servers-chart").height("250px");
+							new Morris.Line({
+								element: "servers-chart",
+								lineColors: ["#009688"],
+								data: data,
+								xkey: "timestamp",
+								ykeys: ["value"],
+								labels: ["Servers"]
+							});
+							$("#servers-chart").toggle();
+						}
+					});
+					$.getJSON("/data/users", function(data, status) {
+						if(status=="success") {
+							$("#users-chart").height("250px");
+							new Morris.Line({
+								element: "users-chart",
+								lineColors: ["#009688"],
+								data: data,
+								xkey: "timestamp",
+								ykeys: ["value"],
+								labels: ["Users"]
+							});
+							$("#users-chart").toggle();
+						}
+					});
+					$.getJSON("<%= poll_url %>", function(data, status) {
+						$("#poll-response").html(JSON.stringify(data, null, 4));
+					});
+					$.getJSON("/data/delay", function(data, status) {
+						if(status=="success") {
+							$("#delay-chart").height("250px");
+							new Morris.Line({
+								element: "delay-chart",
+								lineColors: ["#009688"],
+								data: data,
+								xkey: "timestamp",
+								ykeys: ["value"],
+								labels: ["Response Time"],
+								postUnits: "ms"
+							});
+							$("#delay-chart").toggle();
+						}
+					});
+					</script>
+				</div>
+				<% if(unresolvedIncidents.length>0 || authUser) { %>
+					<p class="title">
+						Unresolved issues
+					</p>
+
+		            <% if(authUser) { %>
+						<div class="control is-grouped">
+							<p class="control is-expanded">
+				                <a class="button is-fullwidth is-primary is-outlined" onclick="$('#new-incident-box').slideToggle(86);">
+				                    <span class="icon">
+				                        <i class="fa fa-plus"></i>
+				                    </span>
+				                    <span>Create new status incident</span>
+				                </a>
+							</p>
+							<p class="control">
+								<span class="select">
+									<select name="state" onchange="window.location.href = '/edit/status?state=' + this.value;">
+										<option value="online" <%= status.current.value=="online" ? "selected" : "" %>>All systems operational</option>
+										<option value="outage" <%= status.current.value=="outage" ? "selected" : "" %>>Major outage</option>
+										<option value="maintenance" <%= status.current.value=="maintenance" ? "selected" : "" %>>Scheduled maintenance</option>
+										<option value="performance" <%= status.current.value=="performance" ? "selected" : "" %>>Degraded performance</option>
+									</select>
+								</span>
+							</p>
+						</div>
+		                <div id="new-incident-box" class="box" style="display: none;margin-top: 10px;margin-bottom: 0px;">
+		                    <form action="/new/incident" method="post">
+		                        <p class="control has-icon has-icon-left">
+		                            <input name="name" class="input" type="text" placeholder="Name" required>
+		                            <i class="fa fa-commenting"></i>
+		                        </p>
+		                        <div class="control is-grouped">
+		                            <p class="control">
+		                                <span class="select">
+		                                    <select name="type">
+		                                        <option value="outage">Major Outage</option>
+		                                        <option value="maintenance">Maintenance</option>
+		                                        <option value="performance">Degraded Performance</option>
+		                                    </select>
+		                                </span>
+		                            </p>
+		                            <p class="control">
+		                                <button class="button is-primary">
+		                                    <span class="icon">
+		                                        <i class="fa fa-plus"></i>
+		                                    </span>
+		                                    <span>Add</span>
+		                                </button>
+		                            </p>
+		                        </div>
+		                    </form>
+		                </div>
+		                <br>
+		            <% } %>
+
+					<% for(var i=unresolvedIncidents.length-1; i>=0; i--) { %>
+						<% var incident = unresolvedIncidents[i]; %>
+		                <% include ../partials/incident %>
+		            <% } %>
+				<% } %>
+				<p class="title">
+					Past incidents
+				</p>
+			<% } else { %>
+				<p class="title">
+					Past incidents (pg. <%= pages.current %>)
+				</p>
+			<% } %>
+
+			<% if(incidents.length>0) { %>
+	            <% for(var i=incidents.length-1; i>=0; i--) { %>
+					<% var incident = incidents[i]; %>
+	                <% include ../partials/incident %>
+	            <% } %>
+			<% } else { %>
+				<div class="has-text-centered">
+					<span class="tag is-medium is-success">No status incidents reported!</span>
+				</div>
+			<% } %>
+
+            <nav class="level is-mobile">
+                <div class="level-left">
+                    <div class="level-item">
+                        <a class="button <%= pages.showPrevious ? '' : 'is-hidden' %>" href="?page=<%= pages.current+1 %>">
+                            <span class="icon is-small">
+                                <i class="fa fa-chevron-left"></i>
+                            </span>
+                            <span>Older incidents</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <a class="button <%= pages.showNext ? '' : 'is-hidden' %>" href="?page=<%= pages.current-1 %>">
+                            <span>Newer incidents</span>
+                            <span class="icon is-small">
+                                <i class="fa fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </section>
+
+    <% include ../partials/footer %>
+</body>
+</html>

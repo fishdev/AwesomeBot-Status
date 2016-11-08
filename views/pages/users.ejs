@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Users - AwesomeBot Status</title>
+	<% include ../partials/head %>
+</head>
+<body>
+    <section class="hero is-light is-fullheight">
+        <div class="hero-head">
+			<a class="nav-item is-brand title is-5 is-active" href="#" style="font-family: Montserrat;">
+                <img src="/img/icon.png" style="border-radius: 100%;">
+                &nbsp;
+                AwesomeBot
+            </a>
+		</div>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="columns">
+                    <div class="column is-6 is-offset-3">
+                        <p class="control">
+                            <a class="button is-small" href="/">
+                                <span class="icon is-small">
+                                    <i class="fa fa-chevron-left"></i>
+                                </span>
+                                <span>Return home</span>
+                            </a>
+                        </p>
+                        <div class="box has-text-left">
+                            <p class="title">
+                                User accounts
+                            </p>
+                            <p class="subtitle">
+                                Ask BitQuote before modifying
+                            </p>
+                            <% for(var i=0; i<users.length; i++) { %>
+        	                    <div class="notification">
+        	                        <% if(authUser.username==users[i]) { %>
+                                        <form action="/edit/password" method="post">
+                                            <div class="control is-horizontal">
+                                                <div class="control-label">
+                                                    <label class="label"><%= authUser.username %></label>
+                                                </div>
+                                                <p class="control has-icon has-icon-left">
+                    	                            <input name="password" class="input" type="password" placeholder="New password" required>
+                    	                            <i class="fa fa-key"></i>
+                    	                        </p>
+                                                &nbsp;
+                                                <p class="control">
+                                                    <button class="button">
+                                                        <span class="icon is-small">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </span>
+                                                        <span>Change</span>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </form>
+        	                        <% } else { %>
+                                        <a class="delete" onclick="if(confirm('Are you sure you want to delete this user?')) {window.location.href = '/delete/user?username=<%= users[i] %>';}"></a>
+                                        <%= users[i] %>
+                                    <% } %>
+        	                    </div>
+        	                <% } %>
+        					<a class="button is-fullwidth is-primary is-outlined" onclick="$('#new-user-box').slideToggle(86);">
+        	                    <span class="icon">
+        	                        <i class="fa fa-plus"></i>
+        	                    </span>
+        	                    <span>Create new user</span>
+        	                </a>
+        	                <div id="new-user-box" class="box" style="display: none;margin-top: 10px;margin-bottom: 0px;">
+        	                    <form action="/new/user" method="post">
+        	                        <p class="control has-icon has-icon-left">
+        	                            <input name="username" class="input" type="text" placeholder="Username" required>
+        	                            <i class="fa fa-user"></i>
+        	                        </p>
+        							<p class="control has-icon has-icon-left">
+        	                            <input name="password" class="input" type="password" placeholder="Password" required>
+        	                            <i class="fa fa-key"></i>
+        	                        </p>
+                                    <p class="control">
+                                        <button class="button is-primary">
+                                            <span class="icon">
+                                                <i class="fa fa-plus"></i>
+                                            </span>
+                                            <span>Add</span>
+                                        </button>
+                                    </p>
+        	                    </form>
+        	                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
