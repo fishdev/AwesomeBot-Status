@@ -279,7 +279,7 @@ app.post("/new/update", (req, res) => {
 			if(err) {
 				res.redirect("/error");
 			} else {
-				res.redirect(`/${req.body.id}`);
+				res.redirect(`/${req.body.id+1}`);
 			}
 		});
 	} else {
@@ -349,7 +349,7 @@ app.get("/delete/update", (req, res) => {
 			if(err) {
 				res.redirect("/error");
 			} else {
-				res.redirect(`/${req.query.id}`);
+				res.redirect(`/${req.query.id+1}`);
 			}
 		});
 	} else {
