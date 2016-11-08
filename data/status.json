@@ -1,4 +1,12 @@
 {
     "current": "outage",
-    "log": []
+    "log": [
+        {
+            "timestamp": 1478558301726,
+            "response": 200,
+            "delay": 100,
+            "servers": 10000,
+            "users": 500000
+        }
+    ]
 }
