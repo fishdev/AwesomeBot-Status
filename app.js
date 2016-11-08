@@ -179,11 +179,11 @@ app.get("/", (req, res) => {
 			return count + (log.response==200);
 		}, 0);
 		data.uptime_percent = Math.ceil((lastDayOnlineCount/lastDayStatusLog.length)*100);
-		data.server_count = statusData.log[statusData.log.length-1].servers || "?";
-		data.user_count = statusData.log[statusData.log.length-1].users || "?";
-		data.last_response = statusData.log[statusData.log.length-1].response;
+		data.server_count = (statusData.log[statusData.log.length-1] || {}).servers || "?";
+		data.user_count = (statusData.log[statusData.log.length-1] || {}).users || "?";
+		data.last_response = (statusData.log[statusData.log.length-1] || {}).response;
 		data.poll_url = config.poll_url;
-		data.last_delay = statusData.log[statusData.log.length-1].delay;
+		data.last_delay = (statusData.log[statusData.log.length-1] || {}).delay;
 	}
 	incidentsData = incidentsData.filter(incident => {
 		return incident.updates.length>0 && incident.updates[incident.updates.length-1].type=="resolved";
