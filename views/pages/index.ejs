@@ -112,24 +112,15 @@
 						}
 					});
 					</script>
-				</div>
-				<% if(unresolvedIncidents.length>0 || authUser) { %>
-					<p class="title">
-						Unresolved issues
-					</p>
 
-		            <% if(authUser) { %>
-						<div class="control is-grouped">
-							<p class="control is-expanded">
-				                <a class="button is-fullwidth is-primary is-outlined" onclick="$('#new-incident-box').slideToggle(86);">
-				                    <span class="icon">
-				                        <i class="fa fa-plus"></i>
-				                    </span>
-				                    <span>Create new status incident</span>
-				                </a>
-							</p>
-							<p class="control">
-								<span class="select">
+					<% if(authUser) { %>
+						<br>
+						<div class="control is-horizontal">
+							<div class="control-label">
+								<label class="label">Current Status</label>
+							</div>
+							<div class="control">
+								<span class="select is-fullwidth">
 									<select name="state" onchange="window.location.href = '/edit/status?state=' + this.value;">
 										<option value="online" <%= status.current.value=="online" ? "selected" : "" %>>All systems operational</option>
 										<option value="outage" <%= status.current.value=="outage" ? "selected" : "" %>>Major outage</option>
@@ -137,8 +128,22 @@
 										<option value="performance" <%= status.current.value=="performance" ? "selected" : "" %>>Degraded performance</option>
 									</select>
 								</span>
-							</p>
+							</div>
 						</div>
+					<% } %>
+				</div>
+				<% if(unresolvedIncidents.length>0 || authUser) { %>
+					<p class="title">
+						Unresolved issues
+					</p>
+
+		            <% if(authUser) { %>
+		                <a class="button is-fullwidth is-primary is-outlined" onclick="$('#new-incident-box').slideToggle(86);">
+		                    <span class="icon">
+		                        <i class="fa fa-plus"></i>
+		                    </span>
+		                    <span>Create new status incident</span>
+		                </a>
 		                <div id="new-incident-box" class="box" style="display: none;margin-top: 10px;margin-bottom: 0px;">
 		                    <form action="/new/incident" method="post">
 		                        <p class="control has-icon has-icon-left">
